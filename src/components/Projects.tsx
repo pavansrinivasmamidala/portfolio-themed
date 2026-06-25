@@ -62,6 +62,7 @@ export default function Projects() {
                         href={link.url}
                         className="p-3 rounded-full bg-zinc-800 hover:bg-white hover:text-black transition-all duration-300 z-10 relative"
                         title={link.name}
+                        target="_blank"
                       >
                         <link.icon size={20} />
                       </a>

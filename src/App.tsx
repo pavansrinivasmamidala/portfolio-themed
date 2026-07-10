@@ -32,63 +32,76 @@ function EditorialWrapper() {
 type Theme = 'editorial' | 'brutalist' | 'swiss' | 'noir';
 
 export default function App() {
-  const [currentTheme, setCurrentTheme] = useState<Theme>('editorial');
+ const [currentTheme, setCurrentTheme] = useState<Theme>(() => {
+    const themeKeys: Theme[] = ['editorial', 'brutalist', 'swiss', 'noir'];
+    return themeKeys[Math.floor(Math.random() * themeKeys.length)];
+  });
   const [isSwitcherOpen, setIsSwitcherOpen] = useState(false);
   
   // Intro Animation States
-  const [introState, setIntroState] = useState<'theme' | 'text' | 'done'>('theme');
-  const [introText, setIntroText] = useState('');
-  const [isIntroComplete, setIsIntroComplete] = useState(false);
+  // const [introState, setIntroState] = useState<'theme' | 'text' | 'done'>('theme');
+  // const [introText, setIntroText] = useState('');
+  // const [isIntroComplete, setIsIntroComplete] = useState(false);
   const [showTooltip, setShowTooltip] = useState(false);
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    let timeouts: NodeJS.Timeout[] = [];
-    let isMounted = true;
+    // let timeouts: NodeJS.Timeout[] = [];
+    // let isMounted = true;
 
-    // Prevent scrolling during intro
-    document.body.style.overflow = 'hidden';
+    // // Prevent scrolling during intro
+    // document.body.style.overflow = 'hidden';
 
-    const sequence = [
-      { type: 'theme', theme: 'editorial', delay: 0 },
-      { type: 'text', text: '1 PORTFOLIO', delay: 700 },
-      { type: 'theme', theme: 'brutalist', delay: 1600 },
-      { type: 'text', text: '4 THEMES', delay: 2300 },
-      { type: 'theme', theme: 'swiss', delay: 3200 },
-      { type: 'text', text: '1 CLICK', delay: 3900 },
-      { type: 'theme', theme: 'noir', delay: 4800 },
-      { type: 'text', text: 'CHOOSE YOUR VIBE', delay: 5500 },
-      { type: 'done', theme: 'editorial', delay: 6800 },
-    ];
+    // const sequence = [
+    //   { type: 'theme', theme: 'editorial', delay: 0 },
+    //   { type: 'text', text: '1 PORTFOLIO', delay: 700 },
+    //   { type: 'theme', theme: 'brutalist', delay: 1600 },
+    //   { type: 'text', text: '4 THEMES', delay: 2300 },
+    //   { type: 'theme', theme: 'swiss', delay: 3200 },
+    //   { type: 'text', text: '1 CLICK', delay: 3900 },
+    //   { type: 'theme', theme: 'noir', delay: 4800 },
+    //   { type: 'text', text: 'CHOOSE YOUR VIBE', delay: 5500 },
+    //   { type: 'done', theme: 'editorial', delay: 6800 },
+    // ];
 
-    sequence.forEach(({ type, theme, text, delay }) => {
-      const t = setTimeout(() => {
-        if (!isMounted) return;
+    // sequence.forEach(({ type, theme, text, delay }) => {
+    //   const t = setTimeout(() => {
+    //     if (!isMounted) return;
         
-        if (type === 'theme') {
-          setIntroState('theme');
-          setCurrentTheme(theme as Theme);
-        } else if (type === 'text') {
-          setIntroState('text');
-          setIntroText(text as string);
-        } else if (type === 'done') {
-          setIntroState('done');
-          setIsIntroComplete(true);
-          setCurrentTheme(theme as Theme);
-          document.body.style.overflow = 'auto'; // Restore scrolling
+    //     if (type === 'theme') {
+    //       setIntroState('theme');
+    //       setCurrentTheme(theme as Theme);
+    //     } else if (type === 'text') {
+    //       setIntroState('text');
+    //       setIntroText(text as string);
+    //     } else if (type === 'done') {
+    //       setIntroState('done');
+    //       setIsIntroComplete(true);
+    //       setCurrentTheme(theme as Theme);
+    //       document.body.style.overflow = 'auto'; // Restore scrolling
           
-          const t2 = setTimeout(() => { if(isMounted) setShowTooltip(true); }, 500);
-          const t3 = setTimeout(() => { if(isMounted) setShowTooltip(false); }, 8000);
-          timeouts.push(t2, t3);
-        }
-      }, delay);
-      timeouts.push(t);
-    });
+    //       const t2 = setTimeout(() => { if(isMounted) setShowTooltip(true); }, 500);
+    //       const t3 = setTimeout(() => { if(isMounted) setShowTooltip(false); }, 8000);
+    //       timeouts.push(t2, t3);
+    //     }
+    //   }, delay);
+    //   timeouts.push(t);
+    // });
 
-    return () => {
-      isMounted = false;
-      timeouts.forEach(clearTimeout);
-      document.body.style.overflow = 'auto';
+    // return () => {
+    //   isMounted = false;
+    //   timeouts.forEach(clearTimeout);
+    //   document.body.style.overflow = 'auto';
+    // };
+
+
+     const t1 = setTimeout(() => setShowTooltip(true), 1500);
+    const t2 = setTimeout(() => setShowTooltip(false), 8000);
+
+
+     return () => {
+      clearTimeout(t1);
+      clearTimeout(t2);
     };
   }, []);
 
@@ -102,7 +115,7 @@ export default function App() {
   return (
     <>
       {/* Intro Overlay */}
-      <AnimatePresence>
+      {/* <AnimatePresence>
         {!isIntroComplete && introState === 'text' && (
           <motion.div
             initial={{ opacity: 0 }}
@@ -123,7 +136,7 @@ export default function App() {
             </motion.h1>
           </motion.div>
         )}
-      </AnimatePresence>
+      </AnimatePresence> */}
 
       {/* Theme Switcher UI */}
       <div className="fixed bottom-6 left-6 z-[100] flex items-center">

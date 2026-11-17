@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { Github, Mail, Box } from 'lucide-react';
+import { Github, Mail, Box, Linkedin } from 'lucide-react';
 import { Link } from '../router';
 import { LINKS, PROFILE } from '../data/profile';
 
@@ -54,7 +54,10 @@ export default function Layout({ path, children }: { path: string; children: Rea
           <div>
             © {new Date().getFullYear()} {PROFILE.name} · {PROFILE.location}
           </div>
-          <div className="flex items-center gap-5">
+          <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
+            <a href={LINKS.linkedin} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 hover:text-magenta">
+              <Linkedin size={14} /> LinkedIn
+            </a>
             <a href={LINKS.github} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 hover:text-cyan">
               <Github size={14} /> GitHub
             </a>

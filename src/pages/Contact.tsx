@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Copy, Check, Github, Box, Mail } from 'lucide-react';
+import { Copy, Check, Github, Box, Mail, Linkedin } from 'lucide-react';
 import { Container } from '../components/Layout';
 import { PROFILE, LINKS, HTB_STATS } from '../data/profile';
 
@@ -17,6 +17,7 @@ export default function Contact() {
   };
 
   const rows = [
+    { icon: Linkedin, label: 'LinkedIn', value: '/in/pavan-srinivas-m', href: LINKS.linkedin, hover: 'hover:text-magenta' },
     { icon: Github, label: 'GitHub', value: '@pavansrinivasmamidala', href: LINKS.github, hover: 'hover:text-cyan' },
     { icon: Box, label: 'Hack The Box', value: `@${HTB_STATS.handle}`, href: LINKS.htb, hover: 'hover:text-lime' },
   ];

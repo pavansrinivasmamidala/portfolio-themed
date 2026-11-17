@@ -17,6 +17,7 @@ export const PROFILE = {
 
 export const LINKS = {
   github: 'https://github.com/pavansrinivasmamidala',
+  linkedin: 'https://www.linkedin.com/in/pavan-srinivas-m/',
   htb: 'https://profile.hackthebox.com/profile/019e5d39-8f9e-7252-b1b9-f5e7f22caab5',
   email: `mailto:${PROFILE.email}`,
 };

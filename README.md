@@ -1,20 +1,26 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://ai.google.dev/static/site-assets/images/share-ais-513315318.png" />
-</div>
+# Pavan Mamidala — Portfolio
 
-# Run and deploy your AI Studio app
+Frontend engineer portfolio with an application-security side: projects, experience, and Hack The Box case studies written as short pentest reports (what broke, why, and how a developer fixes it).
 
-This contains everything you need to run your app locally.
+**Stack:** React 19 · TypeScript · Vite · Tailwind CSS v4 · motion
 
-View your app in AI Studio: https://ai.studio/apps/20d0defd-6f17-43e6-94fb-f403ddbf9f00
+## Run locally
 
-## Run Locally
+```bash
+npm install
+npm run dev      # http://localhost:3000
+npm run build    # outputs to build/
+```
 
-**Prerequisites:**  Node.js
+## Editing content
 
+Everything on the site comes from two files:
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+- `src/data/profile.ts` — bio, links, HTB stats, experience, skills, projects
+- `src/data/machines.ts` — Hack The Box case studies
+
+Routing is hash-based (`/#/security/sea`), so the site works on any static host without rewrite rules.
+
+## Case study rules
+
+Only retired machines. No credentials, flags, IP addresses, tokens, or working exploit payloads — the write-ups are about the reasoning and the fix.

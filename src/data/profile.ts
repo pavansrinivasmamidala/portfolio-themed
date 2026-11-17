@@ -106,13 +106,22 @@ export type Project = {
 
 export const PROJECTS: Project[] = [
   {
-    title: 'Type with Friends',
-    blurb: 'A multiplayer typing race inspired by monkeytype — real-time rooms over WebSockets.',
-    tech: ['Svelte', 'Node.js', 'Socket.io', 'MongoDB'],
-    image: '/monkeytype.png',
-    repo: 'https://github.com/pavansrinivasmamidala/type-with-friends',
-    live: 'https://type-with-friends.vercel.app/',
-    status: 'In progress',
+    title: 'Keyclash',
+    blurb:
+      'A minimalist typing test you can race people on. Synced multiplayer races with live opponent carets, private rooms with invite links, and a server that re-checks every word before it ranks a score.',
+    tech: ['JavaScript', 'Node.js', 'Express', 'Socket.io', 'Canvas'],
+    image: '/keyclash.png',
+    live: 'https://keyclash-kz6f.onrender.com',
+    status: 'Shipped',
+  },
+  {
+    title: 'Doodlebop',
+    blurb:
+      'A mobile-first multiplayer party game: draw-and-guess plus Mafia, a word-bomb mode, and a team word game, for up to 16 players. Includes group voice chat over WebRTC and a live admin panel.',
+    tech: ['JavaScript', 'Node.js', 'Socket.io', 'WebRTC', 'Canvas', 'Postgres'],
+    image: '/doodlebop.png',
+    live: 'https://doodlebop-5cyo.onrender.com',
+    status: 'Shipped',
   },
   {
     title: 'Blog AI',

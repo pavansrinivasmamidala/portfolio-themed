@@ -1,33 +1,54 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,800;1,400&family=Space+Grotesk:wght@300;400;500;600;700&family=Syne:wght@400;700;800&family=DM+Serif+Display:ital@0;1&display=swap');
 @import "tailwindcss";
 
 @theme {
-  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
-  --font-serif: "Playfair Display", Georgia, serif;
-  --font-grotesk: "Space Grotesk", sans-serif;
-  --font-display: "Syne", sans-serif;
-  --font-noir: "DM Serif Display", serif;
+  --font-sans: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Syne", "Space Grotesk", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+
+  --color-bg: #0a0a0f;
+  --color-surface: #0f0f17;
+  --color-surface-2: #14141e;
+  --color-line: #23232e;
+  --color-ink: #ededf2;
+  --color-soft: #b8b8c6;
+  --color-muted: #7a7a8c;
+  --color-magenta: #ff2e97;
+  --color-cyan: #19f0e4;
+  --color-lime: #c6ff3d;
 }
 
 @layer base {
+  html { scroll-behavior: smooth; }
   body {
-    @apply antialiased;
+    @apply bg-bg text-ink font-sans antialiased;
+    background-color: #0a0a0f;
+  }
+  ::selection { background: var(--color-magenta); color: #0a0a0f; }
+  :focus-visible { outline: 2px solid var(--color-cyan); outline-offset: 3px; border-radius: 4px; }
+}
+
+@layer components {
+  .text-stroke-cyan {
+    color: transparent;
+    -webkit-text-stroke: 2px var(--color-cyan);
+    text-shadow: 0 0 24px rgba(25, 240, 228, 0.3);
+  }
+  .glow-magenta { text-shadow: 0 0 30px rgba(255, 46, 151, 0.45); }
+  .card-hover { transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease; }
+  .card-hover:hover {
+    transform: translate(-3px, -3px);
+    box-shadow: 6px 6px 0 var(--color-magenta);
+    border-color: var(--color-magenta);
+  }
+  .eyebrow {
+    @apply font-mono text-xs uppercase tracking-[0.25em] text-magenta;
+  }
+  .chip {
+    @apply font-mono text-[11px] px-2 py-0.5 rounded-[3px] border border-line text-muted;
   }
 }
 
-/* Theme Specific Utilities */
-.brutalist-shadow {
-  box-shadow: 4px 4px 0px 0px #000;
-}
-
-.noir-grain {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 50;
-  opacity: 0.05;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  html { scroll-behavior: auto; }
 }

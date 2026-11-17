@@ -8,7 +8,9 @@ import Work from './pages/Work';
 import Security from './pages/Security';
 import CaseStudy from './pages/CaseStudy';
 import Contact from './pages/Contact';
+import ProjectDetail from './pages/ProjectDetail';
 import { getMachine } from './data/machines';
+import { getProject } from './data/projects';
 import { PROFILE } from './data/profile';
 
 function resolve(path: string): { title: string; page: ReactNode } {
@@ -18,8 +20,12 @@ function resolve(path: string): { title: string; page: ReactNode } {
       return { title: `${PROFILE.shortName} — Frontend & Security`, page: <Home /> };
     case 'about':
       return { title: `About — ${PROFILE.shortName}`, page: <About /> };
-    case 'work':
-      return { title: `Work — ${PROFILE.shortName}`, page: <Work /> };
+    case 'work': {
+      if (!slug) return { title: `Work — ${PROFILE.shortName}`, page: <Work /> };
+      const project = getProject(slug);
+      if (project) return { title: `${project.title} — ${PROFILE.shortName}`, page: <ProjectDetail project={project} /> };
+      break;
+    }
     case 'contact':
       return { title: `Contact — ${PROFILE.shortName}`, page: <Contact /> };
     case 'security': {

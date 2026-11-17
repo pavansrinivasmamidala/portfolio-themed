@@ -21,7 +21,7 @@ export default function Layout({ path, children }: { path: string; children: Rea
       <header className="sticky top-0 z-40 border-b border-line/70 bg-bg/85 backdrop-blur-md">
         <nav className="mx-auto max-w-5xl px-4 sm:px-6 h-14 flex items-center justify-between gap-4 font-mono text-[13px]">
           <Link to="/" className="font-bold tracking-wider text-cyan shrink-0" aria-label="Home">
-            PM<span className="text-magenta">//</span>DEV
+            PS<span className="text-magenta">//</span>DEV
           </Link>
           <ul className="flex items-center gap-1 sm:gap-2">
             {NAV.map((item) => {

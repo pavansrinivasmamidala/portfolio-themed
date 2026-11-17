@@ -153,7 +153,7 @@ const RECENT: Project[] = [
     blurb:
       'A bear-themed game show for a friend’s gender reveal party: run from a phone, shown on the TV, synced in real time, with an animated grand reveal.',
     tech: ['React', 'TypeScript', 'Framer Motion', 'Supabase', 'Gemini'],
-    cover: 'lime',
+    image: '/bearly-wait.png',
     availability: 'Private event app',
     ai: { tool: 'Google AI Studio' },
     detail: {
@@ -189,7 +189,7 @@ const RECENT: Project[] = [
     blurb:
       'An installable app for logging a newborn’s feeds, diapers and appointments, with charts, reminders, and plain-English questions answered by AI.',
     tech: ['React', 'TypeScript', 'Firestore', 'PWA', 'Gemini'],
-    cover: 'cyan',
+    image: '/baby-tracker.png',
     availability: 'Private family app',
     ai: { tool: 'Google AI Studio' },
     detail: {

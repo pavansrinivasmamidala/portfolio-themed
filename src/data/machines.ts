@@ -301,25 +301,79 @@ export const MACHINES: Machine[] = [
     solved: '2024-11',
     owned: { user: true, root: false },
     cves: ['CVE-2023-50564'],
-    classes: ['Authenticated file upload RCE', 'Password reuse'],
+    classes: ['Secrets in source control', 'Authenticated file upload RCE', 'Password reuse'],
     summary:
-      'A Pluck CMS site running next to a Gitea server. With admin access to Pluck, its module installer accepted an archive containing PHP, and the same password worked for a local user.',
+      'A Pluck CMS site whose own source, admin password hash included, was public on a Gitea server next to it. Pluck’s module installer then accepted an archive containing PHP, and the same password worked for a local user.',
     chain: [
-      { phase: 'Recon', title: 'Pluck CMS + Gitea', detail: 'The web server ran Pluck 4.7.18, with a self-hosted Gitea instance alongside it.' },
+      { phase: 'Recon', title: 'The password hash was in the repo', detail: 'The web server ran Pluck 4.7.18. A self-hosted Gitea instance alongside it published the site’s source, including the settings file that stores the admin password hash, and the hash cracked against a wordlist.' },
       { phase: 'Foothold', title: 'Module upload executes PHP', detail: 'Pluck’s module installer extracts uploaded ZIPs into a web-accessible folder without checking their contents (CVE-2023-50564).' },
       { phase: 'User', title: 'Password reuse', detail: 'The CMS admin password was also a local user’s password.' },
     ],
     rootCause: [
+      'The site’s source, including its password hash file, was published on a public Git server.',
       'Plugin installation extracted arbitrary archives into the web root.',
       'Password reused between a web app and an OS account.',
     ],
     fixes: [
+      'Keep credentials and hashes out of repositories, and scan for them in CI.',
       'Signed plugins only, extracted outside the web root and reviewed before activation.',
       'Unique credentials per system, and a password manager for the team.',
     ],
     takeaway: 'Any feature that installs code is a code-execution feature. Treat it with the same access controls as a shell.',
   },
 ];
+
+// Screenshots from my notes, attached to attack-chain steps by index.
+// Every image was reviewed and redacted (IPs, hashes, passwords, auth headers)
+// before being copied here; the originals stay in the private notes repo.
+export type Figure = { step: number; src: string; caption: string };
+
+export const FIGURES: Record<string, Figure[]> = {
+  sightless: [
+    { step: 0, src: '/htb/sightless-1.jpg', caption: '/etc/hosts: the main site and the SQLPad subdomain (target IP redacted).' },
+    { step: 1, src: '/htb/sightless-2.jpg', caption: 'linPEAS confirms the SQLPad shell is inside a Docker container.' },
+    { step: 3, src: '/htb/sightless-3.jpg', caption: 'DevTools attached over the SSH tunnel, paused on the automated Froxlor login.' },
+    { step: 3, src: '/htb/sightless-4.jpg', caption: 'Froxlor’s PHP-FPM settings, where an admin sets the command a root job later runs.' },
+  ],
+  sea: [
+    { step: 0, src: '/htb/sea-1.jpg', caption: 'The theme’s version file gives away WonderCMS 3.2.0.' },
+    { step: 1, src: '/htb/sea-2.jpg', caption: 'My HTTP server log: the admin’s browser fetching files after opening the link.' },
+    { step: 3, src: '/htb/sea-3.jpg', caption: 'netstat: a service listening only on 127.0.0.1:8080.' },
+    { step: 3, src: '/htb/sea-4.jpg', caption: 'The internal “System Monitor (Developing)” tool, reached through an SSH tunnel.' },
+    { step: 3, src: '/htb/sea-5.jpg', caption: 'The log file path travels as a plain form field (Basic-auth value redacted).' },
+  ],
+  chemistry: [
+    { step: 0, src: '/htb/chemistry-1.jpg', caption: 'Content discovery on the Flask app, including the upload route.' },
+    { step: 3, src: '/htb/chemistry-2.jpg', caption: 'The internal dashboard, only reachable through the tunnel.' },
+    { step: 3, src: '/htb/chemistry-3.jpg', caption: 'nmap identifies the internal service as aiohttp 3.9.1.' },
+  ],
+  linkvortex: [
+    { step: 0, src: '/htb/linkvortex-1.jpg', caption: 'The dev subdomain serves its .git directory.' },
+    { step: 0, src: '/htb/linkvortex-2.jpg', caption: 'The restored working tree: a staged change with a hard-coded password (redacted).' },
+    { step: 3, src: '/htb/linkvortex-3.jpg', caption: 'The root-run cleanup script only checks the first symlink target.' },
+  ],
+  node: [
+    { step: 1, src: '/htb/node-1.jpg', caption: '/api/users returns every user, password hashes included (redacted).' },
+    { step: 1, src: '/htb/node-2.jpg', caption: 'Signed in as the admin, with a one-click backup download.' },
+    { step: 2, src: '/htb/node-3.jpg', caption: 'The scheduler executes whatever command is stored in the tasks collection (credentials redacted).' },
+  ],
+  october: [
+    { step: 0, src: '/htb/october-1.jpg', caption: 'nmap fingerprints October CMS on port 80.' },
+    { step: 1, src: '/htb/october-2.jpg', caption: 'The media library accepted a .php5 file.' },
+    { step: 2, src: '/htb/october-3.jpg', caption: 'Ghidra: a 112-byte stack buffer filled by an unchecked strcpy.' },
+  ],
+  valentine: [
+    { step: 0, src: '/htb/valentine-1.jpg', caption: 'The homepage art was the hint.' },
+    { step: 2, src: '/htb/valentine-2.jpg', caption: 'An encrypted private key, browsable in /dev.' },
+  ],
+  nibbles: [{ step: 1, src: '/htb/nibbles-1.jpg', caption: 'The image plugin’s upload handler, read in DevTools.' }],
+  sense: [{ step: 0, src: '/htb/sense-1.jpg', caption: 'DirBuster finds system-users.txt in the web root.' }],
+  greenhorn: [
+    { step: 0, src: '/htb/greenhorn-1.jpg', caption: 'The page source names Pluck 4.7.18.' },
+    { step: 0, src: '/htb/greenhorn-2.jpg', caption: 'The site’s own Gitea repo publishes the admin password hash (redacted).' },
+    { step: 1, src: '/htb/greenhorn-3.jpg', caption: 'Pluck lets admins install themes and modules from uploaded archives.' },
+  ],
+};
 
 export const getMachine = (slug: string) => MACHINES.find((m) => m.slug === slug);
 

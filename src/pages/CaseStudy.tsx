@@ -1,7 +1,43 @@
-import { ArrowLeft, ArrowRight, Lightbulb } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
+import { ArrowLeft, ArrowRight, Lightbulb, Maximize2, X } from 'lucide-react';
 import { Container } from '../components/Layout';
 import { Link } from '../router';
-import { MACHINES, type Machine, type Phase } from '../data/machines';
+import { FIGURES, MACHINES, type Figure, type Machine, type Phase } from '../data/machines';
+
+function Lightbox({ figure, onClose }: { figure: Figure | null; onClose: () => void }) {
+  const ref = useRef<HTMLDialogElement>(null);
+  useEffect(() => {
+    const d = ref.current;
+    if (!d) return;
+    if (figure && !d.open) d.showModal();
+    if (!figure && d.open) d.close();
+  }, [figure]);
+  return (
+    <dialog
+      ref={ref}
+      onClose={onClose}
+      onClick={(e) => e.target === e.currentTarget && onClose()}
+      className="m-auto max-w-[min(1400px,96vw)] max-h-[94vh] bg-transparent p-0 backdrop:bg-black/85 backdrop:backdrop-blur-sm"
+    >
+      {figure && (
+        <figure>
+          <div className="flex justify-end mb-2">
+            <button
+              type="button"
+              onClick={onClose}
+              aria-label="Close image"
+              className="inline-flex items-center gap-1 font-mono text-xs text-ink hover:text-magenta"
+            >
+              close <X size={14} />
+            </button>
+          </div>
+          <img src={figure.src} alt={figure.caption} className="block max-w-full max-h-[86vh] w-auto h-auto rounded-[4px] border border-line" />
+          <figcaption className="mt-3 font-mono text-xs text-soft">{figure.caption}</figcaption>
+        </figure>
+      )}
+    </dialog>
+  );
+}
 
 const PHASE_COLOR: Record<Phase, string> = {
   Recon: 'text-muted border-muted',
@@ -15,6 +51,8 @@ export default function CaseStudy({ machine }: { machine: Machine }) {
   const prev = MACHINES[(i - 1 + MACHINES.length) % MACHINES.length];
   const next = MACHINES[(i + 1) % MACHINES.length];
   const solved = new Date(`${machine.solved}-01T00:00:00`).toLocaleDateString('en', { month: 'long', year: 'numeric' });
+  const figures = FIGURES[machine.slug] ?? [];
+  const [open, setOpen] = useState<Figure | null>(null);
 
   const facts = [
     ['OS', machine.os],
@@ -83,6 +121,28 @@ export default function CaseStudy({ machine }: { machine: Machine }) {
               </div>
               <h3 className="mt-1 text-xl font-semibold">{step.title}</h3>
               <p className="mt-2 text-soft leading-relaxed max-w-3xl">{step.detail}</p>
+              {figures.some((f) => f.step === n) && (
+                <div className="mt-5 grid gap-4 sm:grid-cols-2">
+                  {figures
+                    .filter((f) => f.step === n)
+                    .map((f) => (
+                      <figure key={f.src} className="min-w-0">
+                        <button
+                          type="button"
+                          onClick={() => setOpen(f)}
+                          className="group relative block w-full overflow-hidden rounded-[4px] border border-line bg-surface-2 hover:border-cyan transition-colors"
+                          aria-label={`Enlarge: ${f.caption}`}
+                        >
+                          <img src={f.src} alt={f.caption} loading="lazy" className="block w-full h-44 sm:h-52 object-contain p-2" />
+                          <span className="absolute bottom-2 right-2 inline-flex items-center gap-1 rounded-[3px] bg-bg/85 border border-line px-1.5 py-0.5 font-mono text-[10px] text-soft opacity-80 group-hover:opacity-100 group-hover:text-cyan">
+                            <Maximize2 size={11} aria-hidden /> enlarge
+                          </span>
+                        </button>
+                        <figcaption className="mt-2 font-mono text-[11px] leading-relaxed text-muted">{f.caption}</figcaption>
+                      </figure>
+                    ))}
+                </div>
+              )}
             </li>
           ))}
         </ol>
@@ -125,6 +185,8 @@ export default function CaseStudy({ machine }: { machine: Machine }) {
           <p className="text-ink leading-relaxed">{machine.takeaway}</p>
         </div>
       </aside>
+
+      <Lightbox figure={open} onClose={() => setOpen(null)} />
 
       <nav aria-label="More case studies" className="mt-16 grid sm:grid-cols-2 gap-4">
         <Link to={`/security/${prev.slug}`} className="group border border-line rounded-[4px] p-5 hover:border-magenta transition-colors">

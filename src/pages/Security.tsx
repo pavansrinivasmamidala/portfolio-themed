@@ -109,7 +109,7 @@ export default function Security() {
       <div className="mt-14 flex gap-4 items-start border border-line border-l-2 border-l-cyan bg-surface rounded-[4px] p-5 text-sm text-soft">
         <ShieldCheck className="text-cyan shrink-0 mt-0.5" size={20} />
         <p>
-          Every machine here is a retired Hack The Box lab, attacked in an authorized environment. I've left out credentials, flags, addresses, and working exploit payloads. The write-ups are about the reasoning and the fix, not a copy-paste path.
+          Every machine here is a retired Hack The Box lab, attacked in an authorized environment. I've left out credentials, flags, addresses, and working exploit payloads, and the screenshots are redacted the same way. The write-ups are about the reasoning and the fix, not a copy-paste path.
         </p>
       </div>
     </Container>

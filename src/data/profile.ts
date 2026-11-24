@@ -5,9 +5,10 @@ export const PROFILE = {
   secondary: 'Application Security',
   location: 'Toronto, Canada',
   email: 'chinni.mamidala@gmail.com',
-  status: 'Open to Frontend & AppSec roles',
+  status: 'Open to frontend roles',
+  tagline: 'React, TypeScript and a slightly unhealthy interest in hover states. Currently building trading-floor tools at BMO.',
   intro:
-    'I build fast, accessible React interfaces — and I spend my evenings breaking web apps on Hack The Box. Knowing how attacks actually work makes me a better builder.',
+    'I build fast, accessible React interfaces — and on weekends I break web apps on Hack The Box, which makes me a better builder.',
   about: [
     'I started as the kid who took computers apart to see what was inside. That turned into a career building interfaces: trading-floor tools at BMO, investment dashboards at Bayxis, and a long list of side projects that people actually play with.',
     'Somewhere along the way I got curious about the other side. Why does an upload form let a .php5 file through? What happens when an internal admin tool trusts a file path from the browser? I started working through Hack The Box machines and writing up every one — not just how I got in, but why the bug existed and what the developer should have done instead.',
@@ -72,25 +73,27 @@ export const EXPERIENCE: Job[] = [
   },
 ];
 
-export const SKILLS: { group: string; accent: 'magenta' | 'cyan' | 'lime'; items: string[] }[] = [
+export type Accent = 'lime' | 'sky' | 'lilac' | 'coral';
+
+export const SKILLS: { group: string; accent: Accent; items: string[] }[] = [
   {
     group: 'Frontend',
-    accent: 'magenta',
+    accent: 'lime',
     items: ['React', 'TypeScript', 'JavaScript', 'Next.js', 'Angular', 'Svelte', 'Redux', 'Tailwind CSS', 'HTML5', 'CSS3'],
   },
   {
     group: 'Backend & Data',
-    accent: 'cyan',
+    accent: 'sky',
     items: ['Node.js', 'Express', 'Socket.io', 'Python', 'Java', 'PHP', 'C#', 'MongoDB', 'SQL'],
   },
   {
-    group: 'Security',
-    accent: 'lime',
+    group: 'Security (side quest)',
+    accent: 'coral',
     items: ['OWASP Top 10', 'Burp Suite', 'nmap', 'ffuf / gobuster', 'John / hashcat', 'Ghidra', 'Metasploit', 'Linux privilege escalation'],
   },
   {
     group: 'Tooling',
-    accent: 'cyan',
+    accent: 'lilac',
     items: ['Git', 'Docker', 'Linux', 'Bash', 'AWS', 'Vite', 'Retool'],
   },
 ];

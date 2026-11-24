@@ -1,52 +1,79 @@
 @import "tailwindcss";
 
 @theme {
-  --font-sans: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
-  --font-display: "Syne", "Space Grotesk", sans-serif;
+  --font-sans: "Bricolage Grotesque", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, monospace;
 
-  --color-bg: #0a0a0f;
-  --color-surface: #0f0f17;
-  --color-surface-2: #14141e;
-  --color-line: #23232e;
-  --color-ink: #ededf2;
-  --color-soft: #b8b8c6;
-  --color-muted: #7a7a8c;
-  --color-magenta: #ff2e97;
-  --color-cyan: #19f0e4;
-  --color-lime: #c6ff3d;
+  --color-bg: #f3f1ec;
+  --color-tile: #ffffff;
+  --color-ink: #18181b;
+  --color-soft: #55555e;
+  --color-muted: #6b6b74;
+  --color-line: #e4e1d8;
+  --color-keys: #ebe8df;
+  --color-lime: #d4ff4f;
+  --color-coral: #ff7a59;
+  --color-sky: #a9d8ff;
+  --color-lilac: #d9c8ff;
 }
 
 @layer base {
   html { scroll-behavior: smooth; }
   body {
     @apply bg-bg text-ink font-sans antialiased;
-    background-color: #0a0a0f;
+    background-color: #f3f1ec;
   }
-  ::selection { background: var(--color-magenta); color: #0a0a0f; }
-  :focus-visible { outline: 2px solid var(--color-cyan); outline-offset: 3px; border-radius: 4px; }
+  ::selection { background: var(--color-lime); color: var(--color-ink); }
+  :focus-visible { outline: 2.5px solid var(--color-ink); outline-offset: 3px; border-radius: 8px; }
 }
 
 @layer components {
-  .text-stroke-cyan {
-    color: transparent;
-    -webkit-text-stroke: 2px var(--color-cyan);
-    text-shadow: 0 0 24px rgba(25, 240, 228, 0.3);
+  /* A bento tile: white card with a soft lift on hover. */
+  .tile {
+    @apply relative overflow-hidden rounded-[22px] border border-line bg-tile p-5;
+    transition: transform .2s ease, box-shadow .2s ease;
   }
-  .glow-magenta { text-shadow: 0 0 30px rgba(255, 46, 151, 0.45); }
-  .card-hover { transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease; }
-  .card-hover:hover {
-    transform: translate(-3px, -3px);
-    box-shadow: 6px 6px 0 var(--color-magenta);
-    border-color: var(--color-magenta);
+  a.tile:hover, .tile-hover:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 20px 30px -24px rgba(0, 0, 0, .35);
   }
-  .eyebrow {
-    @apply font-mono text-xs uppercase tracking-[0.25em] text-magenta;
+  .label {
+    @apply font-mono text-[11px] uppercase tracking-[0.08em] text-muted;
   }
+  /* Highlighter swipe behind a word. */
+  .scribble { position: relative; white-space: nowrap; isolation: isolate; }
+  .scribble::after {
+    content: ''; position: absolute; left: -2%; right: -2%; bottom: .08em; height: .28em;
+    background: var(--color-lime); z-index: -1; border-radius: 4px; transform: rotate(-1deg);
+  }
+  /* Keycap: presses down on click, tap or a matching key. */
+  .key {
+    @apply inline-block select-none font-mono text-[13px] rounded-[9px] border bg-tile;
+    padding: 9px 13px 11px;
+    border-color: #d6d2c6;
+    box-shadow: 0 4px 0 #cfcabd;
+    transition: transform .06s, box-shadow .06s;
+  }
+  .key:active, .key.down { transform: translateY(3px); box-shadow: 0 1px 0 #cfcabd; }
   .chip {
-    @apply font-mono text-[11px] px-2 py-0.5 rounded-[3px] border border-line text-muted;
+    @apply font-mono text-[11px] px-2 py-0.5 rounded-full bg-keys text-soft;
+  }
+  /* Tailwind v4 can't @apply a component class, so both buttons spell out the base. */
+  .btn-ink {
+    @apply inline-flex items-center gap-2 rounded-full px-5 py-2.5 font-semibold text-[15px] transition-colors bg-ink text-white hover:bg-[#3a3a40];
+  }
+  .btn-line {
+    @apply inline-flex items-center gap-2 rounded-full px-5 py-2.5 font-semibold text-[15px] transition-colors border-[1.5px] border-ink text-ink hover:bg-ink hover:text-white;
   }
 }
+
+/* Page-change slide. Transform only, so if animation time ever stalls
+   (link previews, screenshot tools) the page is still fully visible. */
+@keyframes page-in {
+  from { transform: translateY(10px); }
+  to { transform: none; }
+}
+.page-in { animation: page-in .25s ease-out; }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }

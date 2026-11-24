@@ -1,12 +1,10 @@
 import type { ReactNode } from 'react';
-import { Github, Mail, Box, Linkedin } from 'lucide-react';
 import { Link } from '../router';
 import { LINKS, PROFILE } from '../data/profile';
 
 const NAV = [
-  { to: '/about', label: 'about' },
   { to: '/work', label: 'work' },
-  { to: '/security', label: 'security' },
+  { to: '/about', label: 'about' },
   { to: '/contact', label: 'contact' },
 ];
 
@@ -15,15 +13,16 @@ export default function Layout({ path, children }: { path: string; children: Rea
 
   return (
     <div className="min-h-screen flex flex-col">
-      <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:bg-magenta focus:text-bg focus:px-3 focus:py-2 font-mono text-sm">
+      <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:bg-lime focus:text-ink focus:px-3 focus:py-2 focus:rounded-lg font-mono text-sm">
         Skip to content
       </a>
-      <header className="sticky top-0 z-40 border-b border-line/70 bg-bg/85 backdrop-blur-md">
-        <nav className="mx-auto max-w-5xl px-4 sm:px-6 h-14 flex items-center justify-between gap-4 font-mono text-[13px]">
-          <Link to="/" className="font-bold tracking-wider text-cyan shrink-0" aria-label="Home">
-            PS<span className="text-magenta">//</span>DEV
+      <header className="sticky top-0 z-40 bg-bg/85 backdrop-blur-md">
+        <nav className="mx-auto max-w-[1100px] px-4 sm:px-5 h-16 flex items-center justify-between gap-4">
+          <Link to="/" className="font-extrabold text-[19px] tracking-[-0.03em] shrink-0" aria-label="Home">
+            <span className="inline-block bg-lime px-1.5 rounded-md -rotate-3">pavan</span>
+            <span className="hidden min-[420px]:inline">srinivas.tech</span>
           </Link>
-          <ul className="flex items-center gap-1 sm:gap-2">
+          <ul className="flex items-center gap-1 sm:gap-3 text-[15px]">
             {NAV.map((item) => {
               const active = section === item.to;
               return (
@@ -31,11 +30,8 @@ export default function Layout({ path, children }: { path: string; children: Rea
                   <Link
                     to={item.to}
                     aria-current={active ? 'page' : undefined}
-                    className={`px-2 py-1 rounded transition-colors ${
-                      active ? 'text-magenta' : 'text-muted hover:text-ink'
-                    }`}
+                    className={`px-2 py-1 rounded-full transition-colors ${active ? 'bg-ink text-white' : 'text-soft hover:text-ink'}`}
                   >
-                    {active && <span aria-hidden>./</span>}
                     {item.label}
                   </Link>
                 </li>
@@ -49,24 +45,18 @@ export default function Layout({ path, children }: { path: string; children: Rea
         {children}
       </main>
 
-      <footer className="border-t border-line mt-24">
-        <div className="mx-auto max-w-5xl px-4 sm:px-6 py-8 flex flex-col sm:flex-row gap-6 sm:items-center justify-between font-mono text-xs text-muted">
-          <div>
-            © {new Date().getFullYear()} {PROFILE.name} · {PROFILE.location}
-          </div>
-          <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
-            <a href={LINKS.linkedin} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 hover:text-magenta">
-              <Linkedin size={14} /> LinkedIn
-            </a>
-            <a href={LINKS.github} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 hover:text-cyan">
-              <Github size={14} /> GitHub
-            </a>
-            <a href={LINKS.htb} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 hover:text-lime">
-              <Box size={14} /> Hack The Box
-            </a>
-            <a href={LINKS.email} className="inline-flex items-center gap-1.5 hover:text-magenta">
-              <Mail size={14} /> Email
-            </a>
+      <footer className="mt-16">
+        <div className="mx-auto max-w-[1100px] px-4 sm:px-5 pb-10">
+          <div className="tile flex flex-col sm:flex-row sm:items-center justify-between gap-5">
+            <div className="text-sm text-soft">
+              © {new Date().getFullYear()} {PROFILE.name} · made in {PROFILE.location.split(',')[0]} with React &amp; too much coffee
+            </div>
+            <ul className="flex flex-wrap gap-x-5 gap-y-2 text-sm font-semibold">
+              <li><a href={LINKS.linkedin} target="_blank" rel="noreferrer" className="hover:underline underline-offset-4">LinkedIn</a></li>
+              <li><a href={LINKS.github} target="_blank" rel="noreferrer" className="hover:underline underline-offset-4">GitHub</a></li>
+              <li><a href={LINKS.email} className="hover:underline underline-offset-4">Email</a></li>
+              <li><Link to="/security" className="hover:underline underline-offset-4">Side quests 🔐</Link></li>
+            </ul>
           </div>
         </div>
       </footer>
@@ -74,27 +64,27 @@ export default function Layout({ path, children }: { path: string; children: Rea
   );
 }
 
-export function PageHeader({ eyebrow, title, accent, children }: { eyebrow: string; title: string; accent?: string; children?: ReactNode }) {
+export function Container({ children, className = '' }: { children: ReactNode; className?: string }) {
+  return <div className={`mx-auto max-w-[1100px] px-4 sm:px-5 ${className}`}>{children}</div>;
+}
+
+/** Big intro tile used at the top of inner pages. */
+export function PageHeader({ label, title, children, tone = 'tile' }: { label: string; title: ReactNode; children?: ReactNode; tone?: 'tile' | 'lime' | 'sky' | 'lilac' | 'coral' }) {
+  const bg = { tile: 'bg-tile', lime: 'bg-lime', sky: 'bg-sky', lilac: 'bg-lilac', coral: 'bg-coral' }[tone];
   return (
-    <header className="pt-16 sm:pt-24 pb-10">
-      <div className="eyebrow mb-4">{eyebrow}</div>
-      <h1 className="font-display font-extrabold uppercase tracking-tight leading-[0.92] text-[clamp(40px,8vw,80px)]">
-        {title} {accent && <span className="text-magenta glow-magenta">{accent}</span>}
-      </h1>
-      {children && <div className="mt-6 max-w-2xl text-soft text-lg leading-relaxed">{children}</div>}
+    <header className={`tile ${bg} ${tone !== 'tile' ? 'border-transparent' : ''} mt-2 p-7 sm:p-10`}>
+      <div className={`label ${tone !== 'tile' ? 'text-ink/70' : ''}`}>{label}</div>
+      <h1 className="mt-3 font-extrabold tracking-[-0.045em] leading-[0.98] text-[clamp(38px,6.5vw,68px)]">{title}</h1>
+      {children && <div className="mt-5 max-w-2xl text-[17px] sm:text-lg leading-relaxed text-soft">{children}</div>}
     </header>
   );
 }
 
-export function Container({ children, className = '' }: { children: ReactNode; className?: string }) {
-  return <div className={`mx-auto max-w-5xl px-4 sm:px-6 ${className}`}>{children}</div>;
-}
-
 export function SectionTitle({ children, aside }: { children: ReactNode; aside?: ReactNode }) {
   return (
-    <div className="flex items-end justify-between gap-4 mt-20 mb-6 border-b border-line pb-3">
-      <h2 className="font-display font-extrabold uppercase tracking-tight text-2xl sm:text-3xl">{children}</h2>
-      {aside && <div className="font-mono text-xs text-muted">{aside}</div>}
+    <div className="flex items-end justify-between gap-4 mt-14 mb-4 px-1">
+      <h2 className="font-extrabold tracking-[-0.03em] text-2xl sm:text-[28px]">{children}</h2>
+      {aside && <div className="label">{aside}</div>}
     </div>
   );
 }

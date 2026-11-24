@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { Copy, Check, Github, Box, Mail, Linkedin } from 'lucide-react';
+import { Copy, Check, Github, Mail, Linkedin, ArrowUpRight } from 'lucide-react';
 import { Container } from '../components/Layout';
-import { PROFILE, LINKS, HTB_STATS } from '../data/profile';
+import { PROFILE, LINKS } from '../data/profile';
 
 export default function Contact() {
   const [copied, setCopied] = useState(false);
@@ -16,58 +16,53 @@ export default function Contact() {
     }
   };
 
-  const rows = [
-    { icon: Linkedin, label: 'LinkedIn', value: '/in/pavan-srinivas-m', href: LINKS.linkedin, hover: 'hover:text-magenta' },
-    { icon: Github, label: 'GitHub', value: '@pavansrinivasmamidala', href: LINKS.github, hover: 'hover:text-cyan' },
-    { icon: Box, label: 'Hack The Box', value: `@${HTB_STATS.handle}`, href: LINKS.htb, hover: 'hover:text-lime' },
+  const links = [
+    { icon: Linkedin, label: 'LinkedIn', value: '/in/pavan-srinivas-m', href: LINKS.linkedin, bg: 'bg-sky' },
+    { icon: Github, label: 'GitHub', value: '@pavansrinivasmamidala', href: LINKS.github, bg: 'bg-lilac' },
   ];
 
   return (
     <Container>
-      <section className="pt-20 sm:pt-32">
-        <div className="eyebrow mb-6">// contact</div>
-        <h1 className="font-display font-extrabold uppercase tracking-[-0.03em] leading-[0.9] text-[clamp(48px,11vw,112px)]">
-          Let’s <span className="text-stroke-cyan">talk</span>
-          <span className="text-magenta glow-magenta">.</span>
-        </h1>
-        <p className="mt-8 max-w-xl text-soft text-lg leading-relaxed">
-          {PROFILE.status}. Whether it’s a React codebase that needs care or an app you want someone to poke at, I’d like to hear about it.
-        </p>
+      <div className="grid gap-3.5 lg:grid-cols-[1.4fr_1fr]">
+        <section className="tile p-7 sm:p-10 flex flex-col justify-between gap-8 min-h-[340px]">
+          <div>
+            <div className="label">contact · {PROFILE.status.toLowerCase()}</div>
+            <h1 className="mt-3 font-extrabold tracking-[-0.05em] leading-[0.95] text-[clamp(44px,8vw,88px)]">
+              Say <span className="scribble">hi</span> 👋
+            </h1>
+            <p className="mt-5 max-w-lg text-lg text-soft leading-relaxed">
+              Got a React codebase that needs care, a UI that needs polish, or a team that needs a frontend engineer? I'd like to hear about it.
+            </p>
+          </div>
+          <div className="flex flex-col sm:flex-row gap-2.5">
+            <a href={LINKS.email} className="btn-ink justify-center break-all">
+              <Mail size={16} className="shrink-0" /> {PROFILE.email}
+            </a>
+            <button type="button" onClick={copy} className="btn-line justify-center" aria-live="polite">
+              {copied ? <Check size={16} /> : <Copy size={16} />} {copied ? 'copied!' : 'copy'}
+            </button>
+          </div>
+        </section>
 
-        <div className="mt-10 flex flex-col sm:flex-row gap-3 max-w-xl">
-          <a
-            href={LINKS.email}
-            className="flex-1 inline-flex items-center justify-center gap-2 bg-magenta text-bg font-semibold px-5 py-4 rounded-[4px] hover:bg-ink transition-colors break-all"
-          >
-            <Mail size={18} className="shrink-0" /> {PROFILE.email}
-          </a>
-          <button
-            type="button"
-            onClick={copy}
-            className="inline-flex items-center justify-center gap-2 border border-line px-5 py-4 rounded-[4px] font-mono text-sm hover:border-cyan hover:text-cyan transition-colors"
-            aria-live="polite"
-          >
-            {copied ? <Check size={16} /> : <Copy size={16} />} {copied ? 'copied' : 'copy'}
-          </button>
-        </div>
-
-        <ul className="mt-12 max-w-xl divide-y divide-line border-y border-line">
-          {rows.map((r) => (
-            <li key={r.label}>
-              <a href={r.href} target="_blank" rel="noreferrer" className={`flex items-center justify-between gap-4 py-4 transition-colors ${r.hover}`}>
-                <span className="inline-flex items-center gap-3 font-mono text-sm text-muted">
-                  <r.icon size={16} /> {r.label}
-                </span>
-                <span className="font-mono text-sm">{r.value} ↗</span>
-              </a>
-            </li>
+        <div className="grid gap-3.5">
+          {links.map((l) => (
+            <a key={l.label} href={l.href} target="_blank" rel="noreferrer" className={`tile ${l.bg} border-transparent flex flex-col justify-between min-h-[150px]`}>
+              <div className="flex items-center justify-between">
+                <l.icon size={22} aria-hidden />
+                <ArrowUpRight size={20} aria-hidden />
+              </div>
+              <div>
+                <div className="text-2xl font-extrabold tracking-[-0.03em]">{l.label}</div>
+                <div className="font-mono text-[13px] text-ink/70">{l.value}</div>
+              </div>
+            </a>
           ))}
-          <li className="flex items-center justify-between gap-4 py-4">
-            <span className="font-mono text-sm text-muted">Based in</span>
-            <span className="font-mono text-sm">{PROFILE.location}</span>
-          </li>
-        </ul>
-      </section>
+          <div className="tile bg-ink text-zinc-100 border-transparent">
+            <div className="label text-zinc-400">based in</div>
+            <div className="mt-1 text-2xl font-extrabold tracking-[-0.03em]">{PROFILE.location}</div>
+          </div>
+        </div>
+      </div>
     </Container>
   );
 }

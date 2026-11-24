@@ -1,5 +1,4 @@
 import { useEffect, type ReactNode } from 'react';
-import { motion } from 'motion/react';
 import Layout, { Container, PageHeader } from './components/Layout';
 import { Link, useRoute } from './router';
 import Home from './pages/Home';
@@ -17,7 +16,7 @@ function resolve(path: string): { title: string; page: ReactNode } {
   const [, section, slug] = path.split('/');
   switch (section) {
     case '':
-      return { title: `${PROFILE.shortName} — Frontend & Security`, page: <Home /> };
+      return { title: `${PROFILE.shortName} — Frontend Engineer`, page: <Home /> };
     case 'about':
       return { title: `About — ${PROFILE.shortName}`, page: <About /> };
     case 'work': {
@@ -29,9 +28,9 @@ function resolve(path: string): { title: string; page: ReactNode } {
     case 'contact':
       return { title: `Contact — ${PROFILE.shortName}`, page: <Contact /> };
     case 'security': {
-      if (!slug) return { title: `Security — ${PROFILE.shortName}`, page: <Security /> };
+      if (!slug) return { title: `Side quests — ${PROFILE.shortName}`, page: <Security /> };
       const machine = getMachine(slug);
-      if (machine) return { title: `${machine.name} case study — ${PROFILE.shortName}`, page: <CaseStudy machine={machine} /> };
+      if (machine) return { title: `${machine.name} write-up — ${PROFILE.shortName}`, page: <CaseStudy machine={machine} /> };
       break;
     }
   }
@@ -39,9 +38,9 @@ function resolve(path: string): { title: string; page: ReactNode } {
     title: `404 — ${PROFILE.shortName}`,
     page: (
       <Container>
-        <PageHeader eyebrow="// 404" title="Nothing" accent="here.">
-          That path doesn’t exist. Fuzzing it won’t help either.{' '}
-          <Link to="/" className="text-cyan hover:underline">Go home →</Link>
+        <PageHeader label="404" tone="lilac" title={<>Nothing <span className="scribble">here</span>.</>}>
+          <span className="text-ink/80">That page wandered off. </span>
+          <Link to="/" className="font-semibold text-ink underline underline-offset-4">Go home →</Link>
         </PageHeader>
       </Container>
     ),
@@ -58,9 +57,10 @@ export default function App() {
 
   return (
     <Layout path={path}>
-      <motion.div key={path} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.25, ease: 'easeOut' }}>
+      {/* CSS fade on route change. Keyed so each page replays it. */}
+      <div key={path} className="page-in">
         {page}
-      </motion.div>
+      </div>
     </Layout>
   );
 }

@@ -1,11 +1,7 @@
 import { Sparkles } from 'lucide-react';
 import type { Project } from '../data/projects';
 
-const ACCENT = {
-  magenta: { text: 'text-magenta', glow: 'rgba(255,46,151,0.22)' },
-  cyan: { text: 'text-cyan', glow: 'rgba(25,240,228,0.18)' },
-  lime: { text: 'text-lime', glow: 'rgba(198,255,61,0.16)' },
-} as const;
+const COVER = { magenta: 'bg-lilac', cyan: 'bg-sky', lime: 'bg-lime' } as const;
 
 /** Screenshot when we have one; otherwise a typographic cover in the site's style. */
 export function ProjectVisual({ project, className = '' }: { project: Project; className?: string }) {
@@ -19,38 +15,21 @@ export function ProjectVisual({ project, className = '' }: { project: Project; c
       />
     );
   }
-  const accent = ACCENT[project.cover ?? 'magenta'];
   return (
-    <div
-      role="img"
-      aria-label={`${project.title} cover`}
-      className={`relative h-full w-full overflow-hidden bg-surface-2 ${className}`}
-      style={{
-        backgroundImage: `radial-gradient(circle at 75% 20%, ${accent.glow}, transparent 55%),
-          linear-gradient(var(--color-line) 1px, transparent 1px),
-          linear-gradient(90deg, var(--color-line) 1px, transparent 1px)`,
-        backgroundSize: '100% 100%, 28px 28px, 28px 28px',
-      }}
-    >
-      <div className="absolute inset-0 flex flex-col justify-end p-6">
-        <span className={`font-mono text-[11px] uppercase tracking-[0.2em] ${accent.text}`}>{project.kind}</span>
-        <span className="font-display font-extrabold uppercase tracking-tight leading-[0.9] text-[clamp(28px,5vw,48px)] text-ink mt-2">
-          {project.title}
-        </span>
-      </div>
+    <div role="img" aria-label={`${project.title} cover`} className={`h-full w-full flex flex-col justify-end p-6 ${COVER[project.cover ?? 'lime']} ${className}`}>
+      <span className="label text-ink/70">{project.kind}</span>
+      <span className="mt-1 font-extrabold tracking-[-0.04em] text-[clamp(28px,5vw,44px)] leading-none">{project.title}</span>
     </div>
   );
 }
 
-export function AiBadge({ tool, size = 'sm' }: { tool: string; size?: 'sm' | 'md' }) {
+export function AiBadge({ tool }: { tool: string }) {
   return (
     <span
       title={`Built with AI (${tool}). I directed, tested, debugged and shipped it.`}
-      className={`inline-flex items-center gap-1 font-mono uppercase tracking-wider rounded-[3px] border border-cyan/40 text-cyan bg-bg/85 ${
-        size === 'sm' ? 'text-[10px] px-2 py-1' : 'text-[11px] px-2.5 py-1'
-      }`}
+      className="inline-flex items-center gap-1 rounded-full bg-lime px-2.5 py-1 text-[11px] font-semibold text-ink"
     >
-      <Sparkles size={size === 'sm' ? 11 : 12} aria-hidden /> Built with AI
+      <Sparkles size={12} aria-hidden /> built with AI
     </span>
   );
 }

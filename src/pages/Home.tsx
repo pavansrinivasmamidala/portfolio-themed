@@ -31,15 +31,18 @@ function Eyes() {
     };
   }, []);
   return (
-    <div ref={ref} className="tile min-h-[170px] bg-sky border-transparent flex flex-col items-center justify-center gap-3 text-center" aria-hidden>
+    <div ref={ref} className="tile min-h-[150px] p-4 sm:p-5 sm:min-h-[170px] bg-sky border-transparent flex flex-col items-center justify-center gap-3 text-center" aria-hidden>
       <div className="flex gap-2.5">
         {[0, 1].map((i) => (
-          <div key={i} data-eye className="relative h-[54px] w-[54px] rounded-full border-[3px] border-ink bg-white">
-            <div className="absolute left-1/2 top-1/2 -ml-2.5 -mt-2.5 h-5 w-5 rounded-full bg-ink transition-transform duration-75" />
+          <div key={i} data-eye className="relative h-11 w-11 sm:h-[54px] sm:w-[54px] rounded-full border-[3px] border-ink bg-white">
+            <div className="absolute left-1/2 top-1/2 -ml-2 -mt-2 h-4 w-4 sm:-ml-2.5 sm:-mt-2.5 sm:h-5 sm:w-5 rounded-full bg-ink transition-transform duration-75" />
           </div>
         ))}
       </div>
-      <p className="text-[13px] leading-snug">I'm watching your cursor.<br />It's a frontend thing.</p>
+      <p className="text-[13px] leading-snug">
+        <span className="pointer-coarse:hidden">I'm watching your cursor.<br />It's a frontend thing.</span>
+        <span className="hidden pointer-coarse:inline">Tap anywhere.<br />I'm watching 👀</span>
+      </p>
     </div>
   );
 }
@@ -53,9 +56,9 @@ function Clock() {
     return () => clearInterval(id);
   }, []);
   return (
-    <div className="tile min-h-[170px] bg-lilac border-transparent flex flex-col justify-between">
+    <div className="tile min-h-[150px] p-4 sm:p-5 sm:min-h-[170px] bg-lilac border-transparent flex flex-col justify-between">
       <div className="label text-ink/70">my time</div>
-      <div className="font-extrabold text-[44px] tracking-[-0.05em] leading-none" aria-label={`${time} in Toronto`}>{time}</div>
+      <div className="font-extrabold text-[38px] sm:text-[44px] tracking-[-0.05em] leading-none" aria-label={`${time} in Toronto`}>{time}</div>
       <div className="label text-ink/70">toronto, ca</div>
     </div>
   );
@@ -81,7 +84,7 @@ function Keys() {
     return () => window.removeEventListener('keydown', press);
   }, []);
   return (
-    <div className="tile bg-keys border-transparent sm:col-span-2">
+    <div className="tile bg-keys border-transparent col-span-2">
       <div className="label">tap the keys · my stack</div>
       <ul ref={ref} className="mt-4 flex flex-wrap gap-2">
         {STACK.map((s) => (
@@ -96,7 +99,7 @@ function WideProject({ slug }: { slug: string }) {
   const p = getProject(slug);
   if (!p) return null;
   return (
-    <Link to={`/work/${p.slug}`} className="tile p-0 sm:col-span-2 grid sm:grid-cols-[1.1fr_1fr] group">
+    <Link to={`/work/${p.slug}`} className="tile p-0 col-span-2 grid sm:grid-cols-[1.1fr_1fr] group">
       <img src={p.image} alt={`Screenshot of ${p.title}`} className="w-full aspect-[16/10] sm:aspect-auto sm:h-full object-cover object-left-top" />
       <div className="p-5 flex flex-col justify-between gap-4">
         <div>
@@ -116,7 +119,7 @@ function SmallProject({ slug, wide = false }: { slug: string; wide?: boolean }) 
   const p = getProject(slug);
   if (!p) return null;
   return (
-    <Link to={`/work/${p.slug}`} className={`tile p-0 min-h-[170px] ${wide ? 'sm:col-span-2' : ''}`}>
+    <Link to={`/work/${p.slug}`} className={`tile p-0 min-h-[170px] ${wide ? 'col-span-2' : ''}`}>
       <img src={p.image} alt={`Screenshot of ${p.title}`} className="absolute inset-0 h-full w-full object-cover object-left-top" />
       <span className="absolute left-3 bottom-3 rounded-[10px] bg-white/95 px-2.5 py-1.5 text-sm font-semibold">{p.title}</span>
     </Link>
@@ -130,8 +133,8 @@ export default function Home() {
   return (
     <Container>
       <h1 className="sr-only">{PROFILE.name}, {PROFILE.role}</h1>
-      <div className="grid gap-3.5 sm:grid-cols-2 lg:grid-cols-4 lg:auto-rows-[minmax(170px,auto)]">
-        <section className="tile sm:col-span-2 lg:row-span-2 flex flex-col justify-between gap-6 p-6 sm:p-7">
+      <div className="grid grid-cols-2 gap-3 sm:gap-3.5 lg:grid-cols-4 lg:auto-rows-[minmax(170px,auto)]">
+        <section className="tile col-span-2 lg:row-span-2 flex flex-col justify-between gap-6 p-6 sm:p-7">
           <div className="flex flex-wrap items-center justify-between gap-2">
             <div className="label">{PROFILE.role.toLowerCase()} · {PROFILE.location.split(',')[0].toLowerCase()}</div>
             <span className="inline-flex items-center gap-1.5 rounded-full bg-lime px-2.5 py-1 text-xs font-semibold">
@@ -154,17 +157,17 @@ export default function Home() {
 
         <Eyes />
 
-        <div className="tile min-h-[170px] bg-ink text-zinc-100 border-transparent">
+        <div className="tile min-h-[150px] p-4 sm:p-5 sm:min-h-[170px] bg-ink text-zinc-100 border-transparent">
           <div className="label text-zinc-400">now</div>
-          <h2 className="mt-2.5 text-[22px] font-extrabold tracking-[-0.03em] leading-tight">{current?.role} @ BMO</h2>
+          <h2 className="mt-2.5 text-lg sm:text-[22px] font-extrabold tracking-[-0.03em] leading-tight">{current?.role} @ BMO</h2>
           <p className="mt-1 text-sm text-zinc-400">Real-time React, Redux, OpenFin</p>
         </div>
 
         <Clock />
 
-        <Link to="/security" className="tile min-h-[170px] bg-coral border-transparent flex flex-col justify-between">
+        <Link to="/security" className="tile min-h-[150px] p-4 sm:p-5 sm:min-h-[170px] bg-coral border-transparent flex flex-col justify-between">
           <div className="label text-ink/70">side quest</div>
-          <h2 className="text-[22px] font-extrabold tracking-[-0.03em] leading-[1.1]">I also break web apps (legally) 🔐</h2>
+          <h2 className="text-lg sm:text-[22px] font-extrabold tracking-[-0.03em] leading-[1.1]">I also break web apps (legally) 🔐</h2>
           <span className="text-sm font-semibold">{MACHINE_STATS.documented} write-ups →</span>
         </Link>
 
@@ -175,7 +178,7 @@ export default function Home() {
         <SmallProject slug="bearly-wait" />
         <Keys />
 
-        <div className="tile sm:col-span-2 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div className="tile col-span-2 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <h2 className="text-[28px] sm:text-[30px] font-extrabold tracking-[-0.04em] leading-tight">Got a UI that needs love?</h2>
           <div className="flex flex-wrap gap-2.5 shrink-0">
             <Link to="/contact" className="btn-ink">Say hi</Link>

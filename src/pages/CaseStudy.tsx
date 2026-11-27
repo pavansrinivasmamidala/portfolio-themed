@@ -1,38 +1,9 @@
-import { useEffect, useRef, useState } from 'react';
-import { ArrowLeft, ArrowRight, Lightbulb, Maximize2, X } from 'lucide-react';
+import { useState } from 'react';
+import { ArrowLeft, ArrowRight, Lightbulb, Maximize2 } from 'lucide-react';
 import { Container } from '../components/Layout';
+import Lightbox from '../components/Lightbox';
 import { Link } from '../router';
 import { FIGURES, MACHINES, type Figure, type Machine, type Phase } from '../data/machines';
-
-function Lightbox({ figure, onClose }: { figure: Figure | null; onClose: () => void }) {
-  const ref = useRef<HTMLDialogElement>(null);
-  useEffect(() => {
-    const d = ref.current;
-    if (!d) return;
-    if (figure && !d.open) d.showModal();
-    if (!figure && d.open) d.close();
-  }, [figure]);
-  return (
-    <dialog
-      ref={ref}
-      onClose={onClose}
-      onClick={(e) => e.target === e.currentTarget && onClose()}
-      className="m-auto max-w-[min(1400px,96vw)] max-h-[94vh] bg-transparent p-0 backdrop:bg-ink/80 backdrop:backdrop-blur-sm"
-    >
-      {figure && (
-        <figure>
-          <div className="flex justify-end mb-2">
-            <button type="button" onClick={onClose} aria-label="Close image" className="inline-flex items-center gap-1 rounded-full bg-white px-3 py-1 text-sm font-semibold">
-              close <X size={14} />
-            </button>
-          </div>
-          <img src={figure.src} alt={figure.caption} className="block max-w-full max-h-[84vh] w-auto h-auto rounded-2xl" />
-          <figcaption className="mt-3 text-sm text-white/90">{figure.caption}</figcaption>
-        </figure>
-      )}
-    </dialog>
-  );
-}
 
 const PHASE_BG: Record<Phase, string> = { Recon: 'bg-keys', Foothold: 'bg-sky', User: 'bg-lilac', Root: 'bg-coral' };
 
@@ -156,7 +127,7 @@ export default function CaseStudy({ machine }: { machine: Machine }) {
         </div>
       </aside>
 
-      <Lightbox figure={open} onClose={() => setOpen(null)} />
+      <Lightbox image={open} onClose={() => setOpen(null)} />
 
       <nav aria-label="More write-ups" className="mt-3.5 grid sm:grid-cols-2 gap-3.5">
         <Link to={`/security/${prev.slug}`} className="tile">

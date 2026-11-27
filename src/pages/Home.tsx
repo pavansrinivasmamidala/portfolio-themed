@@ -105,7 +105,7 @@ function WideProject({ slug }: { slug: string }) {
         <div>
           <div className="label">{p.kind.toLowerCase()} · {p.year}</div>
           <h3 className="mt-1.5 text-2xl font-extrabold tracking-[-0.03em]">{p.title}</h3>
-          <p className="mt-1 text-sm text-soft leading-relaxed line-clamp-2">{p.blurb.split('. ')[0]}.</p>
+          <p className="mt-1 text-sm text-soft leading-relaxed line-clamp-2">{p.tagline}</p>
         </div>
         <span className="text-sm font-semibold inline-flex items-center gap-1">
           read more <ArrowUpRight size={15} className="transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />

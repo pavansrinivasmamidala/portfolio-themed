@@ -21,12 +21,7 @@ function ProjectCard({ p }: { p: Project }) {
           <span className="label">{p.year}</span>
         </div>
         <h3 className="mt-1.5 text-2xl font-extrabold tracking-[-0.03em]">{p.title}</h3>
-        <p className="mt-1.5 text-soft leading-relaxed">{p.blurb}</p>
-        <div className="mt-4 flex flex-wrap gap-1.5">
-          {p.tech.map((t) => (
-            <span key={t} className="chip">{t}</span>
-          ))}
-        </div>
+        <p className="mt-1 text-soft">{p.tagline}</p>
       </div>
     </>
   );
